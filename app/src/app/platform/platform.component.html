@@ -1,0 +1,17 @@
+<div *ngIf="platformDto" class="font-mono text-slate-200 text-transform: uppercase pr-2 pl-2 pb-2 text-center">
+  <div>
+    <div class="flex justify-center pb-2 h-12">
+      <a [href]="platformDto.url" target="_blank">
+        <img src="assets/image/{{platformDto.name}}.png" class="h-8" alt="">
+      </a>
+    </div>
+    <div class="text-xs lowercase text-neutral-400">last update: {{ getLastUpdate() }}</div>
+    <div class="text-xs lowercase text-neutral-400">{{ platformDto.data.length }} data sets</div>
+  </div>
+  <app-info-tile *ngFor="let tile of infoTiles"
+                 [prefix]="tile.prefix"
+                 [values]="tile.values"
+                 [backgroundColor]="tile.backgroundColor"
+                 [chartColor]="tile.chartColor"
+  ></app-info-tile>
+</div>

@@ -1,0 +1,28 @@
+<div class="text-slate-100 {{ backgroundColor }} p-2 m-2 rounded-xl inline-block box">
+  <div>{{ getLatest().value }} {{ prefix }}</div>
+  <div class="text-xs">
+    <span *ngIf="isPositive()">+{{ getGrowth() }} 📈</span>
+    <span *ngIf="!isPositive()">{{ getGrowth() }} 📉</span>
+     ({{ getOldest().value }})
+  </div>
+  <div *ngIf="getLatest().value != getOldest().value">
+    <ngx-charts-area-chart
+      [view]="view"
+      [scheme]="colorScheme"
+      [legend]="legend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="xAxis"
+      [yAxis]="yAxis"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [timeline]="timeline"
+      [results]="multi"
+      [trimYAxisTicks]="trimYAxisTicks"
+      [autoScale]="autoScale"
+      (select)="onSelect($event)"
+      (activate)="onActivate($event)"
+      (deactivate)="onDeactivate($event)">
+    </ngx-charts-area-chart>
+  </div>
+</div>

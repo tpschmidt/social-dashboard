@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "aws-sdk": "^2.1048.0",
+    "serverless": "^2.69.1",
+    "serverless-domain-manager": "^5.2.0",
+    "serverless-plugin-layer-manager": "^1.0.6"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "luxon": "^2.2.0",
+    "qs": "^6.10.2",
+    "twitter-api-client": "^1.5.0"
+  }
+}
