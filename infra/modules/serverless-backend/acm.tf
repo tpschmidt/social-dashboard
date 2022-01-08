@@ -11,7 +11,7 @@ resource "null_resource" "export_domain_name" {
   }
 
   provisioner "local-exec" {
-    command = "./${local.root}/go.sh set-backend-url ${aws_apigatewayv2_stage.stage.invoke_url}"
+    command = "sleep 1 && ./${local.root}/go.sh set-config-param terraform_apigateway_url ${aws_apigatewayv2_stage.stage.invoke_url}/"
   }
 
   depends_on = [aws_apigatewayv2_stage.stage]

@@ -9,13 +9,13 @@ ORANGE='\033[0;33m'
 NC='\033[0m'
 
 AWS_REGION=eu-central-1
-DIST_BUCKET=$(cat "${SCRIPT_DIR}/configuration.json" | jq -r '.terraform_dist_bucket')
+DIST_BUCKET=$(cat "${SCRIPT_DIR}/configuration.json" | jq -r '.terraform_frontend_bucket')
 TERRAFORM_STATE_BUCKET=$(cat "${SCRIPT_DIR}/configuration.json" | jq -r '.terraform_state_bucket')
 TERRAFORM_LOCK_TABLE=$(cat "${SCRIPT_DIR}/configuration.json" | jq -r '.terraform_lock_table')
 
 function goal_go() {
     goal_bootstrap-tf
-    goal_apply-tf
+    goal_apply-tf -auto-approve
     goal_rollout
 }
 
@@ -53,16 +53,23 @@ function goal_bootstrap-tf() {
 }
 
 function goal_apply-tf() {
+    local PARAMS
+    if [[ "$@" == *-auto-approve* ]];then
+      PARAMS="-auto-approve"
+    fi
+
     pushd "${SCRIPT_DIR}/infra/account" >/dev/null
         set +e
           cp main.tf main.backup
           sed -i '' "s/\$TERRAFORM_STATE_BUCKET/$TERRAFORM_STATE_BUCKET/" "main.tf"
           sed -i '' "s/\$TERRAFORM_LOCK_TABLE/$TERRAFORM_LOCK_TABLE/" "main.tf"
           terraform init -upgrade
-          terraform apply
+          terraform apply $PARAMS
           mv main.backup main.tf
         set -e
     popd >/dev/null
+
+    goal_print-details
 }
 
 function goal_destroy-tf() {
@@ -89,21 +96,40 @@ function goal_rollout() {
       goal_build
     fi
     goal_deploy-app
+
+    goal_print-details
 }
 
-function goal_set-backend-url() {
-    if [[ -z $1 ]];then
-        echo -e "${RED}ERROR${NC}> No backend URL provided!"
+function goal_print-details() {
+    DOMAIN=$(cat "${SCRIPT_DIR}/configuration.json" | jq -r '.terraform_domain')
+    FRONTEND_SUBDOMAIN=$(cat "${SCRIPT_DIR}/configuration.json" | jq -r '.terraform_subdomain_frontend')
+    BACKEND_SUBDOMAIN=$(cat "${SCRIPT_DIR}/configuration.json" | jq -r '.terraform_subdomain_backend')
+    APIGATEWAY_URL=$(cat "${SCRIPT_DIR}/configuration.json" | jq -r '.terraform_apigateway_url')
+    CLOUDFRONT_URL=$(cat "${SCRIPT_DIR}/configuration.json" | jq -r '.terraform_cloudfront_url')
+    if [[ $DOMAIN != '' ]];then
+      echo -e "Custom domain is ${GREEN}enabled${NC}"
+      echo -e "Frontend-URL: ${ORANGE}https://${FRONTEND_SUBDOMAIN}.${DOMAIN}${NC}"
+      echo -e "Backend-URL: ${ORANGE}https://${BACKEND_SUBDOMAIN}.${DOMAIN}${NC}"
+    fi
+    echo -e "CloudFront-URL: ${ORANGE}${CLOUDFRONT_URL}${NC}"
+    echo -e "API-Gateway-URL: ${ORANGE}${APIGATEWAY_URL}${NC}"
+}
+
+function goal_set-config-param() {
+    if [[ -z $2 ]];then
+        echo -e "${RED}ERROR${NC}> Usage ./go.sh [param] [value]"
         return 1
     fi
 
-    ESCAPED_URL=$(echo $1 | sed 's/\//\\\//g')
+    KEY=$1
+    VALUE=$2
+
+    ESCAPED_URL=$(echo $VALUE | sed 's/\//\\\//g')
 
     cp ${SCRIPT_DIR}/configuration.json ${SCRIPT_DIR}/configuration.backup
-    KEY="terraform_apigateway_domain"
     MATCHER="$KEY\"\: \"[^\"]*"
-    echo -e "Setting ${ORANGE}${KEY}${NC} to ${ORANGE}${1}${NC}"
-    sed -i '' "s/$MATCHER/$KEY\"\: \"$ESCAPED_URL\//" ${SCRIPT_DIR}/configuration.json
+    echo -e "Setting ${ORANGE}${KEY}${NC} to ${ORANGE}${VALUE}${NC}"
+    sed -i '' "s/$MATCHER/$KEY\"\: \"$ESCAPED_URL/" ${SCRIPT_DIR}/configuration.json
 }
 
 function goal_package-layer() {

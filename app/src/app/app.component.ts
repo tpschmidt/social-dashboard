@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
 
   private backendUrl = Config.terraform_domain !== '' ?
     `https://${Config.terraform_subdomain_backend}.${Config.terraform_domain}` :
-    Config.terraform_apigateway_domain;
+    Config.terraform_apigateway_url;
   public order = [
     'twitter',
     'dev',
