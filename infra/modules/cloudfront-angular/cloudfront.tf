@@ -1,5 +1,5 @@
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
-  comment = "${var.dist_prefix} Bucket Access Identity"
+  comment = "${local.prefix} Bucket Access Identity"
 }
 
 resource "aws_cloudfront_distribution" "cdn" {
@@ -19,8 +19,6 @@ resource "aws_cloudfront_distribution" "cdn" {
     for_each = local.has_domain ? [] : [1]
     content {
       cloudfront_default_certificate = true
-      minimum_protocol_version       = "TLSv1.2_2019"
-      ssl_support_method             = "sni-only"
     }
   }
 

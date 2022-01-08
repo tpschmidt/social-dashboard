@@ -1,8 +1,8 @@
 const {DynamoDB} = require("aws-sdk");
 const {DateTime} = require("luxon");
-const {PLATFORMS, timestampToString} = require("./helper");
+const {PLATFORMS, timestampToString} = require("./util/helper");
 
-const TableName = process.env.TABLE_NAME ? process.env.TABLE_NAME : 'social-dashboard-platform-data';
+const TableName = process.env.TABLE_NAME ? process.env.TABLE_NAME : 'social-platform-data';
 const client = new DynamoDB({region: 'eu-central-1'});
 
 module.exports.handler = async () => {

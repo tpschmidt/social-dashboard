@@ -1,13 +1,13 @@
 const {DynamoDB} = require("aws-sdk");
 const {DateTime, Interval} = require("luxon");
-const {timestampToString, PLATFORMS} = require("./helper");
+const {timestampToString, PLATFORMS} = require("./util/helper");
 
 
 const client = new DynamoDB({region: 'eu-central-1'})
-const TableName = process.env.TABLE_NAME ? process.env.TABLE_NAME : 'social-dashboard-platform-data';
+const TableName = process.env.TABLE_NAME ? process.env.TABLE_NAME : 'social-platform-data';
 
 module.exports.handler = async (event) => {
-    const query = event.queryStringParameters;
+    const query = event ? event.queryStringParameters : undefined;
     let since = DateTime.utc().minus({weeks: 1});
     const now = DateTime.utc();
     if (query && query.since) {
@@ -15,7 +15,8 @@ module.exports.handler = async (event) => {
         since = sinceQuery.isValid ? sinceQuery : since;
     }
     const diff = Interval.fromDateTimes(since, now)
-    console.log(`Getting data [since=${timestampToString(since)}, days=${diff.length('days')}, hours=${diff.length('hours')}]`)
+    console.log(`Getting data [since=${timestampToString(since)}, `
+        + `days=${diff.length('days').toFixed()}, hours=${diff.length('hours').toFixed()}]`)
     const results = {};
     await Promise.all(PLATFORMS.map(async p => {
         let data = await getData(p.name, since)
@@ -33,7 +34,11 @@ module.exports.handler = async (event) => {
             };
         }
     }))
-    return results;
+    return {
+        statusCode: 200,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(results)
+    };
 }
 
 function filterLastOfADay(data) {
@@ -62,6 +67,6 @@ async function getData(platform, since) {
 }
 
 if (!process.env.AWS_LAMBDA_FUNCTION_NAME) {
-    this.handler()
+    this.handler().then((data) => console.log(data))
 }
 

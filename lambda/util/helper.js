@@ -1,7 +1,7 @@
 const {DateTime} = require("luxon");
 
 function getVariable(name) {
-    const path = `${__dirname}/${process.env.AWS_LAMBDA_FUNCTION_NAME ? '' : '../'}configuration.json`;
+    const path = `${__dirname}/../${process.env.AWS_LAMBDA_FUNCTION_NAME ? '' : '../'}configuration.json`;
     return require(path)[name]
 }
 

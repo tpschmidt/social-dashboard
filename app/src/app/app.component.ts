@@ -11,7 +11,9 @@ import Config from "../../../configuration.json";
 })
 export class AppComponent implements OnInit {
 
-  private backendUrl = `https://${Config.terraform_subdomain}-api.${Config.terraform_domain}`;
+  private backendUrl = Config.terraform_domain !== '' ?
+    `https://${Config.terraform_subdomain_backend}.${Config.terraform_domain}` :
+    Config.terraform_apigateway_domain;
   public order = [
     'twitter',
     'dev',

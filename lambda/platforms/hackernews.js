@@ -1,4 +1,4 @@
-const {getVariable} = require("../helper");
+const {getVariable} = require("../util/helper");
 const axios = require("axios");
 
 const regex = /.*karma.*?:<\/td>.*?.*<td>[^0-9]*([0-9]*)/gm;

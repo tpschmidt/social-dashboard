@@ -1,7 +1,3 @@
-variable "dist_prefix" {
-  description = "Name of distribution"
-}
-
 variable "subdomain" {
   description = "Actual domain name"
 }

@@ -1,4 +1,4 @@
-const {getVariable} = require("../helper");
+const {getVariable} = require("../util/helper");
 const axios = require("axios");
 
 async function getMedium() {

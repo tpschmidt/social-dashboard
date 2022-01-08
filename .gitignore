@@ -28,5 +28,6 @@ yarn-debug.log*
 yarn-error.log*
 
 configuration.json
+configuration.backup
 **/.vscode/
 /serverless/.serverless/

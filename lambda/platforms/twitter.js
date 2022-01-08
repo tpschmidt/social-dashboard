@@ -1,5 +1,5 @@
 const {TwitterClient} = require("twitter-api-client");
-const {getVariable} = require("../helper");
+const {getVariable} = require("../util/helper");
 
 const apiKey = getVariable('crawler_twitter_api_key');
 const apiSecret = getVariable('crawler_twitter_api_secret_key');

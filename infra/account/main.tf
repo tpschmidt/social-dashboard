@@ -8,8 +8,8 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "$BACKEND_BUCKET"
-    dynamodb_table = "$BACKEND_LOCK_TABLE"
+    bucket         = "$TERRAFORM_STATE_BUCKET"
+    dynamodb_table = "$TERRAFORM_LOCK_TABLE"
     key            = "social-dashboard/prod.tfstate"
     region         = "eu-central-1"
   }
@@ -25,12 +25,20 @@ provider "aws" {
   alias  = "us-east-1"
 }
 
-module "cloudfront" {
-  source      = "../modules/cloudfront-dist"
-  subdomain   = local.subdomain
-  dist_prefix = "social-dashboard"
+module "cloudfront-angular" {
+  source      = "../modules/cloudfront-angular"
   domain      = local.domain_name
+  subdomain   = local.subdomain_frontend
   bucket_name = local.dist_bucket
+  providers = {
+    aws.us-east-1 = aws.us-east-1
+  }
+}
+
+module "serverless-backend" {
+  source = "../modules/serverless-backend"
+  domain      = local.domain_name
+  subdomain   = local.subdomain_backend
   providers = {
     aws.us-east-1 = aws.us-east-1
   }
