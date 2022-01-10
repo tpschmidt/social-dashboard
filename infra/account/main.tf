@@ -39,7 +39,4 @@ module "serverless-backend" {
   source = "../modules/serverless-backend"
   domain      = local.domain_name
   subdomain   = local.subdomain_backend
-  providers = {
-    aws.us-east-1 = aws.us-east-1
-  }
 }

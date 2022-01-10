@@ -49,8 +49,7 @@ data "aws_iam_policy_document" "main" {
     ]
 
     principals {
-      identifiers = [
-      aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn]
+      identifiers = [aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn]
       type = "AWS"
     }
   }
