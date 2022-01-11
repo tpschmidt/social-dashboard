@@ -27,7 +27,7 @@ module.exports.handler = async () => {
 }
 
 async function saveToDynamoDb(data) {
-    return Promise.all(data.map(d => {
+    return Promise.all(data.filter(d => d && d.name).map(d => {
         const Item = {
             platform: {S: d.name},
             timestamp: {S: DateTime.utc().toFormat('yyyyLLdd-HHmmss')}

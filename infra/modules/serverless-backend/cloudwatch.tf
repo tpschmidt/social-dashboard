@@ -6,7 +6,7 @@ resource "aws_cloudwatch_log_group" "main" {
 
 resource "aws_cloudwatch_event_rule" "crawler" {
   name                = "${local.prefix}-crawler"
-  schedule_expression = "rate(15 minutes)"
+  schedule_expression = "rate(1 hour)"
   is_enabled          = true
 }
 
