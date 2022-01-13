@@ -145,14 +145,11 @@ function goal_package-layer() {
 
 function goal_build() {
     pushd app > /dev/null 2>&1
-        export NODE_ENV=production
-        if [[ ${account} == preview ]];then
-          echo "Building for Preview..."
-          yarn run build
-        else
-          echo "Building for Production..."
-          yarn run build --configuration production
+        if [[ ! -d "node_modules" ]];then
+            yarn install
         fi
+        export NODE_ENV=production
+        yarn run build
     popd > /dev/null 2>&1
 }
 
