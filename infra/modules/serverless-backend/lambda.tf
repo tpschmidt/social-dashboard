@@ -1,14 +1,15 @@
 resource "aws_lambda_function" "main" {
-  for_each         = local.functions
-  function_name    = "${local.prefix}-${each.value}"
-  role             = aws_iam_role.main.arn
-  handler          = "${each.value}.handler"
-  runtime          = local.runtime
-  filename          = data.archive_file.function[each.value].output_path
-  source_code_hash = data.archive_file.function[each.value].output_base64sha256
-  memory_size      = 1204
-  timeout          = 15
-  layers           = [aws_lambda_layer_version.layer.arn]
+  for_each                       = local.functions
+  function_name                  = "${local.prefix}-${each.value}"
+  role                           = aws_iam_role.main.arn
+  handler                        = "${each.value}.handler"
+  runtime                        = local.runtime
+  filename                       = data.archive_file.function[each.value].output_path
+  source_code_hash               = data.archive_file.function[each.value].output_base64sha256
+  memory_size                    = 128
+  reserved_concurrent_executions = 1
+  timeout                        = 15
+  layers                         = [aws_lambda_layer_version.layer.arn]
   environment {
     variables = {
       TABLE_NAME = aws_dynamodb_table.platform_data.name
@@ -44,7 +45,7 @@ resource "null_resource" "create_dist_dir" {
 }
 
 resource "aws_lambda_layer_version" "layer" {
-  filename             = data.archive_file.layer.output_path
+  filename            = data.archive_file.layer.output_path
   source_code_hash    = data.archive_file.layer.output_base64sha256
   layer_name          = local.prefix
   compatible_runtimes = [local.runtime]
