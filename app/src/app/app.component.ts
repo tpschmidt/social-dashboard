@@ -30,7 +30,8 @@ export class AppComponent implements OnInit {
     {number: 4, unit: 'hour'},
     {number: 1, unit: 'day'},
     {number: 1, unit: 'week'},
-    {number: 1, unit: 'month'}
+    {number: 1, unit: 'month'},
+    {number: 3, unit: 'month'}
   ];
   public selectedFilter = this.filters[1];
 
