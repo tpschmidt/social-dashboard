@@ -13,7 +13,8 @@ const PLATFORMS = [
     { name: 'reddit', url: `https://www.reddit.com/user/${getVariable('crawler_reddit_handle')}`},
     { name: 'stackoverflow', url: `https://stackoverflow.com/users/${getVariable('crawler_stackoverflow_user_id')}`},
     { name: 'github', url: `https://github.com/${getVariable('crawler_github_handle')}`},
-    { name: 'hackernews', url: `https://news.ycombinator.com/user?id=${getVariable('hackernews_handle')}`}
+    { name: 'hackernews', url: `https://news.ycombinator.com/user?id=${getVariable('hackernews_handle')}`},
+    { name: 'revue', url: `https://www.getrevue.co/app/lists`}
 ];
 
 function timestampToString(ts) {

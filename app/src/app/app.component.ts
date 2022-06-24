@@ -16,9 +16,10 @@ export class AppComponent implements OnInit {
     Config.terraform_apigateway_url;
   public order = [
     'twitter',
+    'medium',
+    'revue',
     'dev',
     'hashnode',
-    'medium',
     'stackoverflow',
     'reddit',
     'github',

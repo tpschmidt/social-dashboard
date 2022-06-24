@@ -168,7 +168,6 @@ else
   echo -e "Usage: $0 <goal>
 
     apply-tf        - apply terraform
-    deploy-sls      - deploy serverless
     package-layer   - package layer
     start           - start local server
     rollout         - build & deploy angular app

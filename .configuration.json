@@ -24,5 +24,6 @@
   "crawler_reddit_client_secret": "tHp...tpQ",
   "crawler_stackoverflow_user_id": "0123456",
   "crawler_github_handle": "mygithubhandle",
-  "hackernews_handle": "myhackernewshandle"
+  "hackernews_handle": "myhackernewshandle",
+  "revue_api_key": "myrevueapikey"
 }
