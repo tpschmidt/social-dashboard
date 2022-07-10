@@ -25,8 +25,8 @@ module.exports.handler = async () => {
         getHackerNews(),
         getRevue(),
     ]);
-    const fulfilled = data.filter(d => d.status === 'fulfilled');
-    const rejected = data.filter(d => d.status === 'rejected');
+    const fulfilled = data.filter(d => d.status === 'fulfilled').map(v => v.value);
+    const rejected = data.filter(d => d.status === 'rejected').map(v => v.reason);
     if (rejected.length) {
         console.log(`Rejected: ${JSON.stringify(rejected)}`);
     }

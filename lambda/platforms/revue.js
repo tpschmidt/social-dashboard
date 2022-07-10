@@ -4,7 +4,7 @@ const axios = require("axios");
 const config = {
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': getVariable('revue_api_key')
+        'Authorization': `Bearer ${getVariable('revue_api_key')}`
     },
 };
 
