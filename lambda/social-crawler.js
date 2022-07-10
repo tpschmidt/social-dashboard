@@ -14,7 +14,7 @@ const TableName = process.env.TABLE_NAME ? process.env.TABLE_NAME : 'social-plat
 const client = new DynamoDB({region: 'eu-central-1'});
 
 module.exports.handler = async () => {
-    const data = await Promise.all([
+    const data = await Promise.allSettled([
         getTwitter(),
         getMedium(),
         getReddit(),
@@ -24,8 +24,13 @@ module.exports.handler = async () => {
         getGithub(),
         getHackerNews(),
         getRevue(),
-    ])
-    await saveToDynamoDb(data);
+    ]);
+    const fulfilled = data.filter(d => d.status === 'fulfilled');
+    const rejected = data.filter(d => d.status === 'rejected');
+    if (rejected.length) {
+        console.log(`Rejected: ${JSON.stringify(rejected)}`);
+    }
+    await saveToDynamoDb(fulfilled);
 }
 
 async function saveToDynamoDb(data) {
