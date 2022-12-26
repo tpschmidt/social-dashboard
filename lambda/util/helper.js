@@ -1,4 +1,4 @@
-const {DateTime} = require("luxon");
+const { DateTime } = require("luxon");
 
 function getVariable(name) {
     const path = `${__dirname}/../${process.env.AWS_LAMBDA_FUNCTION_NAME ? '' : '../'}configuration.json`;
@@ -14,7 +14,8 @@ const PLATFORMS = [
     { name: 'stackoverflow', url: `https://stackoverflow.com/users/${getVariable('crawler_stackoverflow_user_id')}`},
     { name: 'github', url: `https://github.com/${getVariable('crawler_github_handle')}`},
     { name: 'hackernews', url: `https://news.ycombinator.com/user?id=${getVariable('hackernews_handle')}`},
-    { name: 'revue', url: `https://www.getrevue.co/app/lists`}
+    { name: 'revue', url: `https://www.getrevue.co/app/lists`},
+    { name: 'convertkit', url: `https://app.convertkit.com/subscribers`}
 ];
 
 function timestampToString(ts) {
@@ -25,4 +26,4 @@ function stringToTimestamp(ts) {
     return DateTime.fromFormat(ts, 'yyyyLLdd-HHmmss')
 }
 
-module.exports = {getVariable, PLATFORMS, timestampToString};
+module.exports = { getVariable, PLATFORMS, timestampToString };

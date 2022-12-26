@@ -1,9 +1,8 @@
 <div class="font-mono m-2 text-center pb-2">
-  <div class="text-slate-200 text-transform: uppercase text-2xl pb-4">Social Analytics</div>
   <div class="text-slate-200 flex justify-center">
     <div *ngFor="let filter of filters"
-         class="rounded-xl bg-slate-700 m-2 p-1 pl-2 pr-2"
-         [ngClass]="{ 'bg-slate-400': selectedFilter === filter }">
+         class="rounded-md bg-slate-700 m-1 p-1 px-2"
+         [ngClass]="{ 'bg-slate-800': selectedFilter === filter }">
       <button (click)="selectedFilter = filter; reloadPlatformData()">{{ filter.number }} {{ filter.unit }}</button>
     </div>
   </div>
