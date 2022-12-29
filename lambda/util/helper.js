@@ -14,7 +14,7 @@ const PLATFORMS = [
     { name: 'stackoverflow', url: `https://stackoverflow.com/users/${getVariable('crawler_stackoverflow_user_id')}`},
     { name: 'github', url: `https://github.com/${getVariable('crawler_github_handle')}`},
     { name: 'hackernews', url: `https://news.ycombinator.com/user?id=${getVariable('hackernews_handle')}`},
-    { name: 'revue', url: `https://www.getrevue.co/app/lists`},
+    { name: 'revue', url: `https://www.getrevue.co/app/lists`},web
     { name: 'convertkit', url: `https://app.convertkit.com/subscribers`}
 ];
 

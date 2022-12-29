@@ -36,10 +36,6 @@ export class AppComponent implements OnInit {
 
   constructor(private httpClient: HttpClient) {}
 
-  refreshData() {
-    throw new Error('Method not implemented.');
-  }
-
   getPlatforms() {
     if (!this.platforms) return [];
     return Object.values(this.platforms).sort((a, b) =>
@@ -50,6 +46,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.reloadPlatformData();
+    setInterval(() => this.reloadPlatformData(), 1000 * 60 * 5);
   }
 
   reloadPlatformData() {
